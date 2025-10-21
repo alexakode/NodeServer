@@ -1,8 +1,8 @@
-const os = require("os");
-const path = require("path");
-const calculate = require("./calculate");
-console.log(path.parse(__filename));
-console.log(calculate.add(5, 3));
-console.log(calculate.subtract(5, 3));
-console.log(calculate.multiply(5, 3));
-console.log(calculate.divide(5, 3));
+let https = require("http");
+https
+  .createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end("Hello World");
+  })
+  .listen(8080);
+console.log("Server running at http://localhost:8080/");
