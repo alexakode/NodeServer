@@ -12,12 +12,19 @@ db.prepare(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    job_title TEXT
+    job_title TEXT,
+    UNIQUE(first_name, last_name)
   )
 `
 ).run();
-
+// Jeg har ikke not null på job_title fordi noen ansatte kanskje ikke har en tittel ennå
 console.log("Table created");
+db.prepare(
+  `
+  DELETE FROM employees
+  WHERE id NOT IN (SELECT MIN(id) FROM employees GROUP BY first_name, last_name, job_title);
+`
+).run();
 
 // Sett inn noen testdata
 const insert = db.prepare(`
