@@ -48,24 +48,42 @@ const handleGetEmployeeById = (req, res) => {
   res.json({ message: "Employee details", employee });
 };
 const handleUpdateEmployee = (req, res) => {
-    const { id } = req.params;
-    const { firstName, lastName, jobTitle } = req.body;
-    if (!firstName || !lastName || !jobTitle) {
-      return res
-        .status(400)
-        .json({ error: "First name, last name, and job title are required" });
+  const { id } = req.params;
+  const { firstName, lastName, jobTitle } = req.body;
+  if (!firstName || !lastName || !jobTitle) {
+    return res
+      .status(400)
+      .json({ error: "First name, last name, and job title are required" });
+  }
+  try {
+    const result = updateEmployee(id, { firstName, lastName, jobTitle });
+    if (result.changes === 0) {
+      return res.status(404).json({ error: "Employee not found" });
     }
-    try {
-      const result = updateEmployee(id, { firstName, lastName, jobTitle });
-      if (result.changes === 0) {
-        return res.status(404).json({ error: "Employee not found" });
-      }
-      res.json({
-        message: "Employee updated",
-        employee: { id, firstName, lastName, jobTitle },
-      });
-    } catch (err) {
+    res.json({
+      message: "Employee updated",
+      employee: { id, firstName, lastName, jobTitle },
+    });
+  } catch (err) {
     res.status(500).json({ error: "Failed to update employee" });
   }
-}
-module.exports = { handleAddEmployee, handleGetAllEmployees, handleGetEmployeeById, handleUpdateEmployee };
+};
+const handleDeleteEmployee = (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = deleteEmployee(id);
+    if (result.changes === 0) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+    res.json({ message: "Employee deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete employee" });
+  }
+};
+module.exports = {
+  handleAddEmployee,
+  handleGetAllEmployees,
+  handleGetEmployeeById,
+  handleUpdateEmployee,
+  handleDeleteEmployee,
+};
