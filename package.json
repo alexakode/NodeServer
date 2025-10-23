@@ -1,8 +1,10 @@
 {
   "dependencies": {
-    "better-sqlite3": "^12.4.1"
+    "better-sqlite3": "^12.4.1",
+    "express": "^5.1.0"
   },
   "scripts": {
+    "start": "node server.js",
     "dev": "node initDatabase.js",
     "init": "node initDatabase.js"
   }
