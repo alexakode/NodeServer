@@ -15,3 +15,13 @@ app.post("/employees", handleAddEmployee);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+process.on("SIGINT", () => {
+  try {
+    db.close();
+    console.log("Shutting down server...");
+  } catch (error) {
+    console.error("Error occurred while shutting down server:", error);
+  } finally {
+    process.exit(0);
+  }
+});
