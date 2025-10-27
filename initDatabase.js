@@ -18,6 +18,25 @@ db.prepare(
 `
 ).run();
 // Jeg har ikke not null på job_title fordi noen ansatte kanskje ikke har en tittel ennå
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS skills (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+  )
+`
+).run();
+db.prepare(
+  `
+  CREATE TABLE IF NOT EXISTS employee_skills (
+    employee_id INTEGER NOT NULL,
+    skill_id INTEGER NOT NULL,
+    PRIMARY KEY (employee_id, skill_id),
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    FOREIGN KEY (skill_id) REFERENCES skills(id)
+  )
+`
+).run();
 console.log("Table created");
 db.prepare(
   `
