@@ -37,7 +37,32 @@ db.prepare(
   )
 `
 ).run();
+db.prepare(
+  `
+  CREATE INDEX IF NOT EXISTS idx_projects_employee_id
+  ON projects (employee_id);
+`
+).run();
+db.prepare(
+  `
+  CREATE INDEX IF NOT EXISTS idx_employee_skills_employee_id
+  ON employee_skills (employee_id);
+  `
+).run();
+db.prepare(
+  `
+  CREATE INDEX IF NOT EXISTS idx_projects_project_name
+  ON projects (project_name);
+  `
+).run();
+db.prepare(
+  `
+  CREATE INDEX IF NOT EXISTS idx_skills_name
+  ON skills (name);
+  `
+).run();
 console.log("Table created");
+
 db.prepare(
   `
   DELETE FROM employees
