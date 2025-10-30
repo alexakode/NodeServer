@@ -8,7 +8,7 @@ const app = express();
 const http = require("http");
 const { server } = require("socket.io");
 const db = require("./initDatabase");
-const port = 3500; // Changed port from 3000 to 3500
+const port = 3500; // Changed port from 3000 to 3500 pm2 start server.js -- --name=NodeServer
 const server = http.createServer(app);
 const io = new Server(server);
 // Middleware for JSON-parsing
