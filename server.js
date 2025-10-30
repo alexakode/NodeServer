@@ -1,5 +1,9 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const { Server } = require("socket.io");
 const app = express();
 const http = require("http");
 const { server } = require("socket.io");
@@ -24,7 +28,17 @@ app.use("/projects-by-employee", projectsByEmployeeRouter);
 // Importer controller
 const { handleAddEmployee } = require("./controllers/employeeSqlController");
 const { default: helmet } = require("helmet");
-
+if (process.env.NODE_ENV === "production") {
+  const helmet = require("helmet");
+  const rateLimit = require("express-rate-limit");
+  const rateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again later.",
+  });
+  app.use(helmet());
+  app.use(rateLimiter);
+}
 // Rute for å legge til ansatt
 app.post("/employees", handleAddEmployee);
 io.on("connection", (socket) => {
